@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17633f"><title>ECO CONNECT Billing</title>
+<style>
+:root{--g:#17633f;--p:#edf3e9;--ink:#26352d;--line:#d8e0d7}
+*{box-sizing:border-box}body{margin:0;background:#eef1ed;color:var(--ink);font:14px Arial,sans-serif}
+header{background:var(--g);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+h1{font-size:20px;margin:0}header small{opacity:.85}.wrap{max-width:1100px;margin:18px auto;padding:0 12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px}
+h2{font-size:17px;color:var(--g);margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+label{font-size:12px;font-weight:bold;display:block;margin-bottom:4px}input,textarea,select{width:100%;padding:9px;border:1px solid #cbd5cb;border-radius:6px;font:14px Arial}
+textarea{min-height:55px}button{border:0;border-radius:7px;padding:10px 14px;background:var(--g);color:#fff;font-weight:bold;cursor:pointer}
+button.alt{background:#68766d}button.danger{background:#a45b22}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.hidden{display:none!important}.muted{color:#68766d;font-size:12px}.notice{background:#fff6e5;padding:9px;border-radius:6px;color:#704a12;font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:12px}th{background:var(--g);color:white;padding:8px 5px}td{border:1px solid var(--line);padding:6px}
+.items input{border:0;padding:5px;min-width:0}.items td:nth-child(2),.items td:nth-child(3){width:90px}.items td:last-child{width:100px;text-align:right}
+.billhead{display:flex;justify-content:space-between;align-items:center;background:#f6f4e9;border:1px solid var(--g);border-bottom:3px solid #c58a28;padding:10px 14px}
+.brand{font-size:25px;font-weight:bold;color:var(--g)}.contact{text-align:right;line-height:1.6;font-size:12px}
+.meta{display:grid;grid-template-columns:1.3fr .8fr 1fr;border:1px solid var(--line);margin:8px 0 12px}.meta>div{padding:9px;border-right:1px solid var(--line);font-size:12px}
+.billtables{display:grid;grid-template-columns:1fr 1fr;gap:10px}.section{background:var(--p);padding:7px;color:var(--g);font-weight:bold}
+.total{display:flex;justify-content:space-between;gap:12px;background:#f6f4e9;border:1px solid var(--g);padding:10px;margin-top:10px}.total strong{font-size:20px;color:var(--g)}
+.terms{border:1px solid #c58a28;padding:9px;font-size:10px;line-height:1.4;margin-top:9px}
+@media(max-width:700px){.grid{grid-template-columns:1fr 1fr}.billtables{grid-template-columns:1fr}.meta{grid-template-columns:1fr}.meta>div{border-right:0;border-bottom:1px solid var(--line)}}
+@media print{@page{size:A4 landscape;margin:8mm}body{background:#fff;font-size:10px}.no-print{display:none!important}.wrap{max-width:none;margin:0;padding:0}.card{border:0;padding:0;margin:0}.billhead{padding:6px 9px}.brand{font-size:23px}.meta{margin:5px 0 8px}.meta>div{padding:6px}table{font-size:9px}th,td{padding:4px}.total{padding:7px}.total strong{font-size:18px}.terms{font-size:8px;padding:6px}}
+</style>
+</head>
+<body>
+<header><div><h1>ECO CONNECT — Billing</h1><small>Cloud-connected billing workspace</small></div><div id="who" class="muted" style="color:white"></div></header>
+<main class="wrap">
+<section id="login" class="card no-print">
+<h2>Owner / Admin Login</h2>
+<div class="grid">
+<div><label>Email</label><input id="email" type="email" autocomplete="username"></div>
+<div><label>Password</label><input id="password" type="password" autocomplete="current-password"></div>
+<div style="display:flex;align-items:end"><button id="loginBtn">Login</button></div>
+</div><p id="loginMsg" class="muted">Sign in using the user created in Supabase Authentication.</p>
+</section>
+<section id="app" class="hidden">
+<section class="card no-print">
+<div class="actions"><button id="newBtn">New bill</button><button class="alt" id="refreshBtn">Refresh bills</button><button class="alt" id="logoutBtn">Logout</button></div>
+<h2>Saved cloud bills</h2><div id="billList" style="overflow-x:auto">Login to load bills.</div>
+</section>
+<section class="card">
+<div class="billhead"><div><div class="brand">ECO CONNECT</div><b>ECO-FRIENDLY GANPATI IDOLS</b><div id="sellerText">Seller name to be confirmed</div><small>Manufacturer &amp; Exporter of Eco-Friendly Ganpati Idols</small></div>
+<div class="contact"><b>VISHAL</b><br>+91 9179287417<br><b>MAYUR</b><br>+91 97693 37777</div></div>
+<div class="meta">
+<div><b>SELLER</b><br><span id="sellerMeta">Seller name to be confirmed</span><br>Brand: ECO CONNECT<br>Address: Wawanje Village, Near Taloja MIDC, Tal. Panvel, Dist. Raigad, Navi Mumbai, Maharashtra - 410208</div>
+<div><b>COMMERCIAL BILL</b><br>Bill No.: <span id="pBillNo">—</span><br>Date: <span id="pDate">—</span><br>GSTIN: <span id="pGstin">—</span></div>
+<div><b>BILL TO</b><br>Party: <span id="pParty">—</span><br>Mobile: <span id="pMobile">—</span><br>Address: <span id="pAddress">—</span></div>
+</div>
+<div class="billtables">
+<div><div class="section">A | PLAIN IDOLS</div><table><thead><tr><th>Description</th><th>Qty</th><th>Rate (₹)</th><th>Amount (₹)</th></tr></thead><tbody id="plainPrint"></tbody><tfoot><tr><th>Subtotal</th><th id="plainQty">0</th><th></th><th id="plainSum">0</th></tr></tfoot></table></div>
+<div><div class="section">B | DECO IDOLS</div><table><thead><tr><th>Description</th><th>Qty</th><th>Rate (₹)</th><th>Amount (₹)</th></tr></thead><tbody id="decoPrint"></tbody><tfoot><tr><th>Subtotal</th><th id="decoQty">0</th><th></th><th id="decoSum">0</th></tr></tfoot></table></div>
+</div>
+<div class="total"><div>Total idols: <b id="pQty">0</b><br>Advance: <b id="pAdvance">₹0</b><br>Balance: <b id="pBalance">₹0</b></div><div>GRAND TOTAL<br><strong id="pGrand">₹0</strong></div></div>
+<div class="terms"><b>TERMS &amp; CONDITIONS / DISCLAIMER</b><br>
+1. Booking is confirmed only after receipt of 50% advance payment. 2. Customization is subject to prior confirmation. 3. Transportation and delivery charges, wherever applicable, are extra. 4. Company is not responsible for damage caused during transportation after dispatch. 5. Once order is confirmed and production has started, cancellation or modification is not accepted. 6. Customers must verify idol sizes, quantities and specifications at order confirmation.</div>
+</section>
+<section class="card no-print">
+<h2 id="formTitle">Create / Edit Bill</h2>
+<div class="grid">
+<div><label>Seller legal name</label><input id="seller" value="ECO CONNECT"></div>
+<div><label>Bill number</label><input id="billno" placeholder="EC-0001"></div>
+<div><label>Date</label><input id="date" type="date"></div>
+<div><label>Customer / Party name</label><input id="party"></div>
+<div><label>Customer mobile</label><input id="mobile"></div>
+<div><label>GSTIN (if applicable)</label><input id="gstin"></div>
+<div style="grid-column:1/-1"><label>Customer address</label><textarea id="address"></textarea></div>
+<div><label>Advance received (₹)</label><input id="advance" type="number" min="0" value="0"></div>
+</div>
+<h2 style="margin-top:16px">Plain items</h2><div id="plainEditor" class="items"></div><button class="alt" id="addPlain">+ Add Plain item</button>
+<h2 style="margin-top:16px">Deco items</h2><div id="decoEditor" class="items"></div><button class="alt" id="addDeco">+ Add Deco item</button>
+<div class="actions"><button id="saveBtn">Save bill to cloud</button><button class="alt" id="printBtn">Print / Save A4 PDF</button><button class="alt" id="clearBtn">Clear form</button></div>
+<p class="notice">Seller legal name: use KALAGANDH PRIVATE LIMITED only after its Certificate of Incorporation is issued and legal details are verified. Until then, enter the currently registered seller's correct legal name.</p>
+<p id="status" class="muted"></p>
+</section>
+</section>
+</main>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const SUPABASE_URL='https://vhrvbgygpyzplearbxol.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_zmXNUM92GS0AZsruxW1seQ_zQKqAY_U';
+const sb=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id), money=n=>(Number(n)||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+let currentUser=null, editingId=null;
+let rows={plain:[['06” Plain',50,368],['08” Plain',50,473],['12” Plain',100,1575],['15” Plain',50,1960]],deco:[['10” Deco',50,875],['12” Deco',50,2100],['15” Deco',50,2495],['18” Deco',40,3120],['21” Deco',30,4725],['24” Deco',20,5975]]};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function renderEditors(){['plain','deco'].forEach(t=>{$(t+'Editor').innerHTML='<table><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th></th></tr></thead><tbody>'+rows[t].map((r,i)=>`<tr><td><input value="${esc(r[0])}" data-t="${t}" data-i="${i}" data-k="0"></td><td><input type="number" min="0" value="${r[1]}" data-t="${t}" data-i="${i}" data-k="1"></td><td><input type="number" min="0" value="${r[2]}" data-t="${t}" data-i="${i}" data-k="2"></td><td><button class="danger" data-del="${t}" data-i="${i}">×</button></td></tr>`).join('')+'</tbody></table>';});document.querySelectorAll('[data-t]').forEach(el=>el.oninput=()=>{let t=el.dataset.t,i=+el.dataset.i,k=+el.dataset.k;rows[t][i][k]=k===0?el.value:Number(el.value);renderPreview();});document.querySelectorAll('[data-del]').forEach(el=>el.onclick=()=>{rows[el.dataset.del].splice(+el.dataset.i,1);renderEditors();renderPreview();});renderPreview();}
+function data(){return {seller:$('seller').value,billno:$('billno').value,date:$('date').value,party:$('party').value,mobile:$('mobile').value,gstin:$('gstin').value,address:$('address').value,advance:Number($('advance').value)||0};}
+function totals(t){return rows[t].reduce((a,r)=>({q:a.q+(Number(r[1])||0),sum:a.sum+(Number(r[1])||0)*(Number(r[2])||0)}),{q:0,sum:0});}
+function renderPreview(){let d=data(),p=totals('plain'),x=totals('deco'),grand=p.sum+x.sum,q=p.q+x.q;[['plain','plainPrint'],['deco','decoPrint']].forEach(([t,id])=>{$(id).innerHTML=rows[t].map(r=>`<tr><td>${esc(r[0])}</td><td style="text-align:right">${money(r[1])}</td><td style="text-align:right">${money(r[2])}</td><td style="text-align:right">${money(Number(r[1])*Number(r[2]))}</td></tr>`).join('');});$('plainQty').textContent=money(p.q);$('decoQty').textContent=money(x.q);$('plainSum').textContent=money(p.sum);$('decoSum').textContent=money(x.sum);$('pQty').textContent=money(q);$('pGrand').textContent='₹'+money(grand);$('pAdvance').textContent='₹'+money(d.advance);$('pBalance').textContent='₹'+money(grand-d.advance);$('pBillNo').textContent=d.billno||'—';$('pDate').textContent=d.date||'—';$('pGstin').textContent=d.gstin||'—';$('pParty').textContent=d.party||'—';$('pMobile').textContent=d.mobile||'—';$('pAddress').textContent=d.address||'—';$('sellerText').textContent=d.seller;$('sellerMeta').textContent=d.seller;}
+function clearForm(){editingId=null;rows={plain:[['06” Plain',50,368],['08” Plain',50,473],['12” Plain',100,1575],['15” Plain',50,1960]],deco:[['10” Deco',50,875],['12” Deco',50,2100],['15” Deco',50,2495],['18” Deco',40,3120],['21” Deco',30,4725],['24” Deco',20,5975]]};['billno','party','mobile','gstin','address'].forEach(id=>$(id).value='');$('advance').value=0;$('date').value=new Date().toISOString().slice(0,10);$('formTitle').textContent='Create / Edit Bill';renderEditors();}
+function add(t){rows[t].push([t==='plain'?'New Plain':'New Deco',0,0]);renderEditors();}
+async function loadBills(){const {data,error}=await sb.from('bills').select('*').order('created_at',{ascending:false}).limit(200);if(error){$('billList').textContent=error.message;return;}if(!data.length){$('billList').textContent='No bills saved yet.';return;}$('billList').innerHTML='<table><thead><tr><th>Bill No.</th><th>Date</th><th>Party</th><th>Total</th><th>Actions</th></tr></thead><tbody>'+data.map(b=>`<tr><td>${esc(b.bill_no)}</td><td>${esc(b.bill_date)}</td><td>${esc(b.customer_name)}</td><td>₹${money(b.grand_total)}</td><td><button data-edit="${b.id}">Edit</button> <button class="alt" data-open="${b.id}">Open</button></td></tr>`).join('')+'</tbody></table>';document.querySelectorAll('[data-edit],[data-open]').forEach(btn=>btn.onclick=()=>openBill(btn.dataset.edit||btn.dataset.open));}
+async function openBill(id){const {data:b,error}=await sb.from('bills').select('*,bill_items(*)').eq('id',id).single();if(error){alert(error.message);return;}editingId=id;let vals={seller:b.seller_name,billno:b.bill_no,date:b.bill_date,party:b.customer_name,mobile:b.customer_mobile,gstin:b.gstin,address:b.customer_address,advance:b.advance};Object.entries(vals).forEach(([k,v])=>$(k).value=v??'');rows={plain:b.bill_items.filter(i=>i.category==='plain').map(i=>[i.description,i.quantity,i.rate]),deco:b.bill_items.filter(i=>i.category==='deco').map(i=>[i.description,i.quantity,i.rate])};$('formTitle').textContent='Edit Bill '+b.bill_no;renderEditors();window.scrollTo({top:0,behavior:'smooth'});}
+async function saveBill(){let d=data();if(!d.party.trim()){alert('Please enter customer / party name.');return;}if(!d.billno.trim()){let {data:last}=await sb.from('bills').select('bill_no').order('created_at',{ascending:false}).limit(1).maybeSingle();let n=last?Number((last.bill_no.match(/(\\d+)$/)||[])[1]||0)+1:1;d.billno='EC-'+String(n).padStart(4,'0');$('billno').value=d.billno;}
+let p=totals('plain'),x=totals('deco'),grand=p.sum+x.sum,q=p.q+x.q;
+let payload={bill_no:d.billno,bill_date:d.date||new Date().toISOString().slice(0,10),customer_name:d.party,customer_mobile:d.mobile,customer_address:d.address,seller_name:d.seller,gstin:d.gstin,advance:d.advance,subtotal:grand,total_quantity:q,grand_total:grand,balance:grand-d.advance,updated_by:currentUser.id};
+let result=editingId?await sb.from('bills').update(payload).eq('id',editingId).select().single():await sb.from('bills').insert({...payload,created_by:currentUser.id}).select().single();
+if(result.error){$('status').textContent='Save failed: '+result.error.message;return;}let bill=result.data;await sb.from('bill_items').delete().eq('bill_id',bill.id);let itemRows=['plain','deco'].flatMap(t=>rows[t].map(r=>({bill_id:bill.id,category:t,description:r[0],quantity:Number(r[1])||0,rate:Number(r[2])||0,amount:(Number(r[1])||0)*(Number(r[2])||0)})));if(itemRows.length){let ins=await sb.from('bill_items').insert(itemRows);if(ins.error){$('status').textContent='Bill saved but item save failed: '+ins.error.message;return;}}
+await sb.from('activity_logs').insert({bill_id:bill.id,actor_id:currentUser.id,action:editingId?'updated':'created',details:{bill_no:d.billno}});editingId=bill.id;$('status').textContent='Saved to cloud: '+d.billno;await loadBills();}
+async function init(){let {data:{session}}=await sb.auth.getSession();if(session)showApp(session.user);}
+function showApp(user){currentUser=user;$('login').classList.add('hidden');$('app').classList.remove('hidden');$('who').textContent=user.email;loadBills();}
+$('loginBtn').onclick=async()=>{let {data,error}=await sb.auth.signInWithPassword({email:$('email').value,password:$('password').value});$('loginMsg').textContent=error?error.message:'Login successful';if(!error)showApp(data.user);};
+$('logoutBtn').onclick=async()=>{await sb.auth.signOut();location.reload();};
+$('newBtn').onclick=clearForm;$('refreshBtn').onclick=loadBills;$('saveBtn').onclick=saveBill;$('printBtn').onclick=()=>window.print();$('clearBtn').onclick=clearForm;$('addPlain').onclick=()=>add('plain');$('addDeco').onclick=()=>add('deco');
+['seller','billno','date','party','mobile','gstin','address','advance'].forEach(id=>$(id).addEventListener('input',renderPreview));
+$('date').value=new Date().toISOString().slice(0,10);renderEditors();init();
+</script>
+</body></html>
