@@ -1,9 +1,13 @@
-ECO CONNECT V4.0 — Business Suite
+ECO CONNECT V4.3 - Targeted updates only
 
-Deploy: Upload all files in this folder to the root of the existing GitHub repository connected to Cloudflare Pages.
+Files: index.html, eco-connect-logo.png, ganpati-hero.png
 
-Database: This build retains the existing Supabase project URL, publishable key, existing table names (bills, bill_items, customers, ec_payments, ec_expenses, ec_inventory, profiles), and bill-number RPC ec_next_bill_no(). It does not reset or recreate database tables.
+Changes in this update:
+- Plain and Deco item editors are forced into separate full-width vertical sections.
+- Updated default Plain and Deco size/rate list from the supplied 2027 rate card (6, 8, 10, 12, 15, 18, 21, 24, 30, 36, 48 inches).
+- Centered !! Shree Ganeshay Namah !! heading added to invoice.
+- Expense Register includes date-wise summary with date range filtering.
+- Add category button allows a custom expense category; custom categories are remembered in this browser.
 
-Important: The existing database and login accounts are used. Do not run database reset SQL. The app needs internet access for Supabase and the PDF library CDN.
-
-New in V4.0: refreshed responsive styling, corner hamburger menu with slide-out navigation, vertically stacked Plain and Deco item sections, smooth scroll to New Bill form, and centered ॥ श्री गणेशाय नमः ॥ on the PDF invoice.
+Existing Supabase project and tables are retained. No database reset or schema change is included.
+Deploy by replacing the files in the GitHub repository root.
