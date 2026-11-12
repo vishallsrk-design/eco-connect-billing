@@ -17,7 +17,14 @@ Deno.serve(async (req) => {
     const admin = createClient(url, serviceKey);
     const { data: profile, error: profileError } = await admin.from("profiles")
       .select("role").eq("id", caller.id).single();
-    if (profileError || profile?.role !== "owner") return json({ error: "Only Owner can create users" }, 403);
+    if (profileError || profile?.role !== "owner") {
+  console.error("Owner profile check:", profileError?.message, profile?.role);
+  return json({
+    error: "Owner profile check failed",
+    detail: profileError?.message || "Role is not owner",
+    foundRole: profile?.role || null
+  }, 403);
+    }
 
     const body = await req.json();
     if (body.action !== "create") return json({ error: "Unsupported action" }, 400);
