@@ -1,7 +1,7 @@
-ECO CONNECT V4.7 — USER MANAGEMENT UPDATE
+ECO CONNECT V4.9 FINAL — APPROVED BILL LAYOUT FIXES
 =========================================
 
-This ZIP is based on the V4.6 file supplied in this chat. Existing branding,
+This ZIP is based on the user's supplied ECO CONNECT V4.7 file. Existing branding,
 rates, bill pattern, disclaimer, menu and other business modules are retained.
 
 Included changes
@@ -22,6 +22,22 @@ Included changes
    the bill content fits. Very long bills may still need a second page; one-page fit
    depends on the number of line items and device/PDF renderer.
 
+
+Final invoice-only corrections (existing app/dashboard preserved)
+------------------------------------------------------------------
+- Kept the existing ECO CONNECT invoice layout and green/gold theme; no dashboard
+  or business workflow redesign.
+- Used the supplied ECO CONNECT Ganesha logo already included in the package.
+- Aligned Vishal and Mayur contact rows with matching label/number styling.
+- Kept the line below ECO-FRIENDLY GANPATI IDOLS:
+  “Manufacturer & Exporter of Natural Clay Idol”.
+- Added CARTON and CBM to the main size-wise table and its totals summary.
+- Removed the separate Export Details block from the bottom of the bill.
+- Added the user's original blue handwritten signature as a proportion-preserving
+  image on the Authorized Signatory line (signature-original.png).
+- Kept the existing disclaimer, seller identity, buyer details, A4 portrait PDF,
+  and current Supabase/business modules intact.
+
 IMPORTANT DEPLOYMENT STEPS
 --------------------------
 A. Back up your Supabase schema and records before applying database changes.
@@ -33,10 +49,10 @@ C. Deploy the Edge Function:
    supabase functions deploy ec-user-admin
 D. Set Edge Function secrets (never put the service-role key in index.html):
    supabase secrets set SUPABASE_URL="https://vhrvbgygpyzplearbxol.supabase.co"
-   supabase secrets set SUPABASE_ANON_KEY="<your Supabase publishable/anon key>"
-   supabase secrets set SUPABASE_SERVICE_ROLE_KEY="<your service_role key>"
+   Use the current Supabase Edge Function secret configuration for your project.
+   Never expose service-role or secret keys in index.html or share them in chat.
 E. Confirm your existing Owner account has public.profiles.role = 'owner'.
-F. Upload index.html, eco-connect-logo.png and ganpati-hero.png to the GitHub
+F. Upload index.html, eco-connect-logo.png, ganpati-hero.png and signature-original.png to the GitHub
    repository root and let Cloudflare Pages redeploy.
 
 LOGIN
@@ -61,5 +77,22 @@ EXPORT BILLING ADDITION
 - 6, 8 and 10 inch quantities must be multiples of 4; the app warns with lower/higher valid quantities.
 - Other listed sizes use one idol per carton.
 - Export PDF includes a separate compact table: Size, Qty, Cartons, CBM, total cartons and total CBM.
-- Net/gross weight totals are also shown.
+- Export details are displayed in a compact, right-aligned block on the bill.
+- Net Weight and Total Gross Weight are not displayed or calculated.
 - Run the updated SETUP_USER_MANAGEMENT.sql to add export_mode and export_details columns.
+
+
+VERSION 4.8 CHANGE SUMMARY
+--------------------------
+- Export Details block compacted and right-aligned in the bill/PDF.
+- Removed Net Weight and Total Gross Weight from export billing output and calculations.
+- Existing packing chart, carton calculations, CBM calculations, bill layout and other
+  application modules are retained from the supplied V4.7 source.
+
+
+V4.9 packing calculation correction
+-----------------------------------
+- Carton/CBM chart uses the exact size-wise values supplied by the user.
+- 6, 8 and 10 inch export quantities are validated as multiples of 4 using the combined Plain + Deco quantity for each size.
+- 12 to 48 inch use 1 piece per carton and the supplied CBM per carton.
+- No other app layout, theme, modules, rates, disclaimer, or Supabase configuration was intentionally changed.
