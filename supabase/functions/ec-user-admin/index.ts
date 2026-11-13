@@ -9,7 +9,8 @@ Deno.serve(async (req) => {
     if (!authHeader) return json({ error: "Missing authorization" }, 401);
     const url = Deno.env.get("SUPABASE_URL")!;
     const anon = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const secretKeys = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS")!);
+const serviceKey = secretKeys["default"];
     const callerClient = createClient(url, anon, { global: { headers: { Authorization: authHeader } } });
     const { data: { user: caller }, error: authError } = await callerClient.auth.getUser();
     if (authError || !caller) return json({ error: "Not authenticated" }, 401);
