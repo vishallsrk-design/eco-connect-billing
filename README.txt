@@ -76,8 +76,9 @@ EXPORT BILLING ADDITION
 - Export mode calculates cartons and CBM from the supplied packing chart.
 - 6, 8 and 10 inch quantities must be multiples of 4; the app warns with lower/higher valid quantities.
 - Other listed sizes use one idol per carton.
-- Export PDF includes a separate compact table: Size, Qty, Cartons, CBM, total cartons and total CBM.
-- Export details are displayed in a compact, right-aligned block on the bill.
+- Carton and CBM values are included in the main size-wise bill table and totals.
+- No separate Export Item Details section is printed at the bottom of the bill.
+- CBM per carton follows the supplied chart: 6in 0.034; 8in 0.057; 10in 0.057; 12in 0.038; 15in 0.053; 18in 0.092; 21in 0.124; 24in 0.185; 27in 0.206; 30in 0.350; 36in 0.601; 48in 3.212.
 - Net Weight and Total Gross Weight are not displayed or calculated.
 - Run the updated SETUP_USER_MANAGEMENT.sql to add export_mode and export_details columns.
 
